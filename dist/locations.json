@@ -1,0 +1,18 @@
+[
+  {
+    "query": "44130",
+    "name": "Blain",
+    "postalCode": "44130",
+    "normalized": "blain",
+    "lat": 47.46325974,
+    "lon": -1.767701405
+  },
+  {
+    "query": "Paris",
+    "name": "Paris",
+    "postalCode": "75000",
+    "normalized": "paris",
+    "lat": 48.86254988,
+    "lon": 2.336419316
+  }
+]
