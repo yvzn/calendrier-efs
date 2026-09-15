@@ -16,7 +16,6 @@ import (
 	"efs-ical/internal/efsapi"
 	"efs-ical/internal/ical"
 	"efs-ical/internal/normalize"
-	"efs-ical/internal/sitegen"
 	"efs-ical/internal/store"
 )
 
@@ -188,11 +187,6 @@ func runBuild(args []string) error {
 		f.Close()
 
 		fmt.Printf("%s: %d event(s) -> %s\n", l.Name, len(events), filename)
-	}
-
-	baseURL := os.Getenv("EFS_ICAL_BASE_URL")
-	if err := sitegen.Generate(outputDir, locs, baseURL); err != nil {
-		return fmt.Errorf("generate site: %w", err)
 	}
 
 	return nil

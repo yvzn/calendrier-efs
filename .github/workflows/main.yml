@@ -35,10 +35,8 @@ jobs:
         with:
           go-version: '1.27'
           cache: true
-      - name: Generate calendars and index
+      - name: Generate calendars
         run: go run . build
-        env:
-          EFS_ICAL_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload static files as artifact
