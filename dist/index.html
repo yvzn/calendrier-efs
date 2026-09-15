@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendriers de collecte de sang EFS</title>
+<style>
+  :root{
+    --bg: #f7f8fb;
+    --card-bg: #ffffff;
+    --card-border: #e3e6ee;
+    --outer-border: #d7dbe6;
+    --text: #1c2130;
+    --text-muted: #7a8092;
+    --accent: #2f6fed;
+    --accent-bg: #eaf1ff;
+    --accent-bg-hover: #dbe8ff;
+    --step-bg: #2f6fed;
+    --step-text: #ffffff;
+    --link: #2f6fed;
+    --shadow: 0 1px 2px rgba(20,25,40,.04);
+    --radius-card: 16px;
+    --radius-outer: 28px;
+  }
+  html[data-theme="dark"]{
+    --bg: #14161f;
+    --card-bg: #1c1f2b;
+    --card-border: #2c303e;
+    --outer-border: #333748;
+    --text: #eef0f6;
+    --text-muted: #9096a8;
+    --accent: #6fa0ff;
+    --accent-bg: #22304d;
+    --accent-bg-hover: #2a3a5e;
+    --step-bg: #6fa0ff;
+    --step-text: #0f1420;
+    --link: #6fa0ff;
+    --shadow: 0 1px 2px rgba(0,0,0,.2);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px;
+    min-height:100vh;
+  }
+  main{
+    width:100%;
+    max-width:700px;
+    background:var(--card-bg);
+    border:2px solid var(--outer-border);
+    border-radius:var(--radius-outer);
+    padding:32px 36px 24px;
+  }
+
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+  h1{
+    font-size:1.5rem;
+    font-weight:800;
+    margin:0 0 4px;
+    line-height:1.3;
+  }
+  .toolbar{
+    display:flex;
+    gap:8px;
+    flex-shrink:0;
+  }
+  .icon-btn{
+    background:none;
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    min-width:38px;
+    height:38px;
+    padding:0 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    cursor:pointer;
+    font-size:1.05rem;
+    color:var(--text);
+    text-decoration:none;
+    font-family:inherit;
+  }
+  .icon-btn:hover{ background:var(--accent-bg); }
+  .icon-btn svg{ width:20px; height:20px; fill:var(--text); }
+  #lang-label, #theme-icon{ font-size:0.8rem; font-weight:700; }
+
+  .sr-only{
+    position:absolute;
+    width:1px; height:1px;
+    padding:0; margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+
+  .subtitle{
+    color:var(--text-muted);
+    margin:12px 0 4px;
+    font-size:0.98rem;
+  }
+  .features{
+    color:var(--text-muted);
+    font-size:0.92rem;
+    margin:0 0 24px;
+  }
+
+  .step{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    margin:24px 0 14px;
+  }
+  .step-num{
+    background:var(--step-bg);
+    color:var(--step-text);
+    width:22px;
+    height:22px;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.85rem;
+    flex-shrink:0;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+    gap:14px;
+  }
+  .card{
+    border:1px solid var(--card-border);
+    border-radius:var(--radius-card);
+    padding:16px;
+    background:var(--card-bg);
+    box-shadow:var(--shadow);
+  }
+  .card-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    margin-bottom:14px;
+  }
+  .card-title .zip{
+    color:var(--text-muted);
+    font-weight:600;
+  }
+  .copy-btn{
+    width:100%;
+    background:var(--accent-bg);
+    color:var(--accent);
+    border:none;
+    border-radius:10px;
+    padding:9px 10px;
+    font-weight:700;
+    font-size:0.9rem;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .copy-btn:hover{ background:var(--accent-bg-hover); }
+  .copy-btn.copied{ background:#2fb669; color:#fff; }
+
+  details.link-reveal{ margin-top:10px; }
+  details.link-reveal summary{
+    color:var(--text-muted);
+    font-size:0.85rem;
+    cursor:pointer;
+    list-style:none;
+  }
+  details.link-reveal summary::-webkit-details-marker{ display:none; }
+  details.link-reveal summary::before{ content:"▶ "; font-size:0.7rem; }
+  details.link-reveal[open] summary::before{ content:"▼ "; }
+  .raw-link{
+    display:block;
+    margin-top:8px;
+    font-size:0.78rem;
+    word-break:break-all;
+    background:var(--bg);
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    padding:8px;
+    color:var(--text);
+  }
+
+  .add-card{
+    border:1.5px dashed var(--card-border);
+    border-radius:var(--radius-card);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:16px;
+    text-decoration:none;
+    color:var(--text-muted);
+    font-size:0.9rem;
+    text-align:center;
+    min-height:100px;
+  }
+  .add-card:hover{ background:var(--accent-bg); border-color:var(--accent); }
+  .add-card .plus{
+    width:30px; height:30px;
+    border-radius:50%;
+    border:1.5px solid var(--card-border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem;
+  }
+
+  .step2-details{ margin-bottom:8px; }
+
+  footer{
+    margin-top:28px;
+    padding-top:14px;
+    border-top:1px solid var(--card-border);
+  }
+  .faq-body{
+    margin-top:10px;
+    font-size:0.88rem;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+  .faq-body strong{ color:var(--text); }
+  .faq-body a{ color:var(--link); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 data-i18n="title">Calendriers de collecte de sang EFS</h1>
+    <div class="toolbar">
+      <button class="icon-btn" id="lang-toggle">🌐 <span id="lang-label"></span></button>
+      <button class="icon-btn" id="theme-toggle"><span id="theme-icon"></span></button>
+      <a class="icon-btn" id="github-link" href="https://github.com/YOUR-USERNAME/YOUR-REPO" target="_blank" rel="noopener" title="Code source sur GitHub">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+        1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68
+        0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+        0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01
+        8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+
+  <p class="subtitle" data-i18n="subtitle">Ajoutez les prochaines dates de collecte à votre agenda</p>
+  <p class="features" data-i18n="features">✓ Gratuit ✓ Mise à jour automatique ✓ Désabonnement à tout moment</p>
+
+  <div class="step"><span class="step-num">1</span><span data-i18n="step1">Choisissez votre ville</span></div>
+  <div class="grid" id="city-grid"></div>
+
+  <div class="step"><span class="step-num">2</span><span data-i18n="step2">Ajoutez le lien à votre agenda</span></div>
+  <details class="link-reveal step2-details">
+    <summary data-i18n="step2more">Comment faire ?</summary>
+    <div class="faq-body" data-i18n="step2body">
+      <strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">En savoir plus</a>
+    </div>
+  </details>
+
+  <footer>
+    <details class="link-reveal">
+      <summary data-i18n="removeQ">Comment supprimer le calendrier ?</summary>
+      <div class="faq-body" data-i18n="removeA"></div>
+    </details>
+  </footer>
+</main>
+
+<script>
+/* ---------- 1. DATA: generated at build time as locations.json ----------
+   Expected shape: [{ "name": "Paris", "postalCode": "75000", "normalized": "paris", ... }, ...]
+   The .ics file for each city is expected to sit next to this index.html,
+   named "<normalized>.ics" (e.g. ./paris.ics). Your Go build just needs to
+   write locations.json with that shape and drop the matching .ics files alongside. */
+let CITIES = [];
+const MAINTAINER_EMAIL = "mail@ludeo.net";
+
+/* ---------- 2. i18n ---------- */
+const STRINGS = {
+  fr: {
+    title: "Calendriers de collecte de sang EFS",
+    subtitle: "Ajoutez les prochaines dates de collecte à votre agenda",
+    features: "✓ Gratuit ✓ Mise à jour automatique ✓ Désabonnement à tout moment",
+    step1: "Choisissez votre ville",
+    step2: "Ajoutez le lien à votre agenda",
+    step2more: "Comment faire ?",
+    step2body: `<strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Android</strong> : l'application Google Agenda ne permet pas d'ajouter un abonnement directement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou d'un ordinateur) avec le même compte Google, ajoutez le calendrier comme ci-dessus : il apparaîtra ensuite automatiquement dans l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a>`,
+    copy: "Copier le lien",
+    copied: "Lien copié !",
+    showLink: "Afficher le lien",
+    addCity: "Ajouter une ville",
+    removeQ: "Comment supprimer le calendrier ?",
+    removeA: `<strong>Google Agenda</strong> : Paramètres → Ajouter un agenda → Parcourir les agendas d'intérêt public → trouvez l'agenda importé sous "Autres agendas" → menu ⋮ → Se désabonner. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Outlook</strong> : Calendrier → clic droit sur le calendrier dans la liste de gauche → Supprimer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → sélectionnez le calendrier importé dans la barre latérale → Supprimer l'abonnement au calendrier. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">En savoir plus</a><br><br>
+      <strong>Android</strong> : la suppression se fait aussi via calendar.google.com dans un navigateur (même compte Google) — Paramètres → le calendrier importé → Se désabonner ; l'agenda disparaît ensuite de l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a>`,
+    mailSubject: "Ajouter une ville au calendrier EFS",
+    mailBody: "Bonjour,\n\nPourriez-vous ajouter <<ville>> à la liste des villes du calendrier EFS ?\n\nMerci !",
+    langAnnounce: "Langue changée : Français",
+    themeDarkAnnounce: "Mode sombre activé",
+    themeLightAnnounce: "Mode clair activé",
+    loadError: "Impossible de charger la liste des villes."
+  },
+  en: {
+    title: "EFS blood donation calendars",
+    subtitle: "Add upcoming donation dates to your calendar",
+    features: "✓ Free ✓ Auto-updating ✓ Unsubscribe anytime",
+    step1: "Choose your city",
+    step2: "Add the link to your calendar app",
+    step2more: "How?",
+    step2body: `<strong>Google Calendar</strong>: open Google Calendar on desktop → next to "Other calendars", click + → "From URL" → paste the copied link → Add calendar. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a><br><br>
+      <strong>Outlook</strong>: Calendar → Add calendar → Subscribe from web → paste the copied link → Import. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">Learn more</a><br><br>
+      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → File → New Calendar Subscription (or Settings → Accounts → Add Account → Other on iOS) → paste the copied link → Subscribe. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">Learn more</a><br><br>
+      <strong>Android</strong>: the Google Calendar app doesn't let you add a subscription directly. Open calendar.google.com in your phone's browser (or on a computer) signed into the same Google account, add the calendar as described above, and it will appear automatically in the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a>`,
+    copy: "Copy link",
+    copied: "Link copied!",
+    showLink: "Show link",
+    addCity: "Add a city",
+    removeQ: "How do I remove the calendar?",
+    removeA: `<strong>Google Calendar</strong>: Settings → Add calendar → Browse calendars of interest → find the imported calendar under "Other calendars" → ⋮ menu → Unsubscribe. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a><br><br>
+      <strong>Outlook</strong>: Calendar → right-click the calendar in the left-hand list → Delete. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">Learn more</a><br><br>
+      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → select the imported calendar in the sidebar → Delete Calendar Subscription. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">Learn more</a><br><br>
+      <strong>Android</strong>: removal also happens via calendar.google.com in a browser (same Google account) — Settings → the imported calendar → Unsubscribe; it then disappears from the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a>`,
+    mailSubject: "Add a city to the EFS calendar",
+    mailBody: "Hello,\n\nCould you please add <<city>> to the list of cities in the EFS calendar?\n\nThanks!",
+    langAnnounce: "Language switched: English",
+    themeDarkAnnounce: "Dark mode enabled",
+    themeLightAnnounce: "Light mode enabled",
+    loadError: "Couldn't load the list of cities."
+  }
+};
+
+function announce(msg){
+  const el = document.getElementById("announcer");
+  el.textContent = "";
+  // re-trigger even if the same message is announced twice in a row
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+
+let lang = localStorage.getItem("lang") || (navigator.language.startsWith("fr") ? "fr" : "en");
+
+function applyLang(shouldAnnounce){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (STRINGS[lang][key] !== undefined) el.innerHTML = STRINGS[lang][key];
+  });
+  document.getElementById("lang-label").textContent = lang.toUpperCase();
+  document.getElementById("lang-toggle").title = lang === "fr" ? "Switch to English" : "Passer en français";
+  if (shouldAnnounce) announce(STRINGS[lang].langAnnounce);
+  renderCities();
+}
+
+document.getElementById("lang-toggle").addEventListener("click", () => {
+  lang = lang === "fr" ? "en" : "fr";
+  localStorage.setItem("lang", lang);
+  applyLang(true);
+});
+
+/* ---------- 3. theme ---------- */
+let theme = localStorage.getItem("theme") ||
+  (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+function applyTheme(shouldAnnounce){
+  document.documentElement.setAttribute("data-theme", theme);
+  // icon shows what's currently active, not the action
+  document.getElementById("theme-icon").textContent = theme === "dark" ? "🌙" : "☀️";
+  document.getElementById("theme-toggle").title = theme === "dark"
+    ? STRINGS[lang].themeDarkAnnounce
+    : STRINGS[lang].themeLightAnnounce;
+  if (shouldAnnounce) announce(theme === "dark" ? STRINGS[lang].themeDarkAnnounce : STRINGS[lang].themeLightAnnounce);
+}
+applyTheme(false);
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  theme = theme === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", theme);
+  applyTheme(true);
+});
+
+/* ---------- 4. clipboard copy with fallback ---------- */
+async function copyLink(url, btn){
+  const t = STRINGS[lang];
+  try{
+    await navigator.clipboard.writeText(url);
+  }catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = url;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand("copy"); }catch(e2){}
+    document.body.removeChild(ta);
+  }
+  const original = btn.textContent;
+  btn.textContent = t.copied;
+  btn.classList.add("copied");
+  setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1800);
+}
+
+/* ---------- 5. render city cards ---------- */
+function renderCities(){
+  const t = STRINGS[lang];
+  const grid = document.getElementById("city-grid");
+  grid.innerHTML = "";
+
+  if (citiesLoadFailed){
+    grid.innerHTML = `<p style="color:var(--text-muted)">${t.loadError}</p>`;
+    return;
+  }
+
+  CITIES.forEach(c => {
+    const icsUrl = new URL(`./${c.normalized}.ics`, window.location.href).href;
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-title">🗓️ ${c.name} <span class="zip">${c.postalCode}</span></div>
+      <button class="copy-btn">${t.copy}</button>
+      <details class="link-reveal">
+        <summary>${t.showLink}</summary>
+        <span class="raw-link">${icsUrl}</span>
+      </details>
+    `;
+    card.querySelector(".copy-btn").addEventListener("click", (e) => copyLink(icsUrl, e.target));
+    grid.appendChild(card);
+  });
+
+  const addCard = document.createElement("a");
+  addCard.className = "add-card";
+  addCard.href = `mailto:${MAINTAINER_EMAIL}?subject=${encodeURIComponent(t.mailSubject)}&body=${encodeURIComponent(t.mailBody)}`;
+  addCard.innerHTML = `<span class="plus">+</span><span>${t.addCity}</span>`;
+  grid.appendChild(addCard);
+}
+
+/* ---------- 6. load data, then do the first render ---------- */
+let citiesLoadFailed = false;
+
+fetch("./locations.json")
+  .then(res => { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+  .then(data => { CITIES = data; })
+  .catch(() => { citiesLoadFailed = true; })
+  .finally(() => applyLang(false));
+</script>
+</body>
+</html>
