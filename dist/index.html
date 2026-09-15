@@ -11,13 +11,13 @@
     --card-border: #e3e6ee;
     --outer-border: #d7dbe6;
     --text: #1c2130;
-    --text-muted: #7a8092;
-    --accent: #2f6fed;
+    --text-muted: #666c7c;
+    --accent: #2358c9;
     --accent-bg: #eaf1ff;
     --accent-bg-hover: #dbe8ff;
-    --step-bg: #2f6fed;
+    --step-bg: #2358c9;
     --step-text: #ffffff;
-    --link: #2f6fed;
+    --link: #2358c9;
     --shadow: 0 1px 2px rgba(20,25,40,.04);
     --radius-card: 16px;
     --radius-outer: 28px;
@@ -222,6 +222,16 @@
   }
 
   .step2-details{ margin-bottom:8px; }
+  .noscript-warning{
+    background:var(--accent-bg);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:0.9rem;
+    color:var(--text);
+    margin:0 0 16px;
+  }
+  .noscript-warning a{ color:var(--link); }
 
   footer{
     margin-top:28px;
@@ -245,8 +255,8 @@
     <div class="toolbar">
       <button class="icon-btn" id="lang-toggle">🌐 <span id="lang-label"></span></button>
       <button class="icon-btn" id="theme-toggle"><span id="theme-icon"></span></button>
-      <a class="icon-btn" id="github-link" href="https://github.com/YOUR-USERNAME/YOUR-REPO" target="_blank" rel="noopener" title="Code source sur GitHub">
-        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+      <a class="icon-btn" id="github-link" href="https://github.com/YOUR-USERNAME/YOUR-REPO" target="_blank" rel="noopener" aria-label="Voir le code source sur GitHub (nouvelle fenêtre)">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
         0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
         1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
         0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68
@@ -263,22 +273,33 @@
   <p class="features" data-i18n="features">✓ Gratuit ✓ Mise à jour automatique ✓ Désabonnement à tout moment</p>
 
   <div class="step"><span class="step-num">1</span><span data-i18n="step1">Choisissez votre ville</span></div>
+  <noscript>
+    <p class="noscript-warning">
+      Cette page a besoin de JavaScript pour afficher la liste des villes et générer les liens de calendrier.
+      Merci d'activer JavaScript dans votre navigateur, ou de <a href="mailto:mail@ludeo.net?subject=Demande%20de%20lien%20de%20calendrier&body=Bonjour,%0D%0A%0D%0AJe%20souhaite%20obtenir%20un%20lien%20de%20calendrier%20pour%20ma%20ville:...">nous écrire directement pour obtenir un lien</a>.
+    </p>
+  </noscript>
   <div class="grid" id="city-grid"></div>
 
   <div class="step"><span class="step-num">2</span><span data-i18n="step2">Ajoutez le lien à votre agenda</span></div>
   <details class="link-reveal step2-details">
     <summary data-i18n="step2more">Comment faire ?</summary>
     <div class="faq-body" data-i18n="step2body">
-      <strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">En savoir plus</a>
+      <strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Google Agenda (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="En savoir plus sur Outlook (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="En savoir plus sur Apple Calendrier (nouvelle fenêtre)">En savoir plus</a>
     </div>
   </details>
 
   <footer>
     <details class="link-reveal">
       <summary data-i18n="removeQ">Comment supprimer le calendrier ?</summary>
-      <div class="faq-body" data-i18n="removeA"></div>
+      <div class="faq-body" data-i18n="removeA">
+        <strong>Google Agenda</strong> : Paramètres → Ajouter un agenda → Parcourir les agendas d'intérêt public → trouvez l'agenda importé sous "Autres agendas" → menu ⋮ → Se désabonner. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Google Agenda (nouvelle fenêtre)">En savoir plus</a><br><br>
+        <strong>Outlook</strong> : Calendrier → clic droit sur le calendrier dans la liste de gauche → Supprimer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="En savoir plus sur Outlook (nouvelle fenêtre)">En savoir plus</a><br><br>
+        <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → sélectionnez le calendrier importé dans la barre latérale → Supprimer l'abonnement au calendrier. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="En savoir plus sur Apple Calendrier (nouvelle fenêtre)">En savoir plus</a><br><br>
+        <strong>Android</strong> : la suppression se fait aussi via calendar.google.com dans un navigateur (même compte Google) — Paramètres → le calendrier importé → Se désabonner ; l'agenda disparaît ensuite de l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Android (nouvelle fenêtre)">En savoir plus</a>
+      </div>
     </details>
   </footer>
 </main>
@@ -301,19 +322,19 @@ const STRINGS = {
     step1: "Choisissez votre ville",
     step2: "Ajoutez le lien à votre agenda",
     step2more: "Comment faire ?",
-    step2body: `<strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Android</strong> : l'application Google Agenda ne permet pas d'ajouter un abonnement directement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou d'un ordinateur) avec le même compte Google, ajoutez le calendrier comme ci-dessus : il apparaîtra ensuite automatiquement dans l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a>`,
+    step2body: `<strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Google Agenda (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="En savoir plus sur Outlook (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="En savoir plus sur Apple Calendrier (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Android</strong> : l'application Google Agenda ne permet pas d'ajouter un abonnement directement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou d'un ordinateur) avec le même compte Google, ajoutez le calendrier comme ci-dessus : il apparaîtra ensuite automatiquement dans l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Android (nouvelle fenêtre)">En savoir plus</a>`,
     copy: "Copier le lien",
     copied: "Lien copié !",
     showLink: "Afficher le lien",
     addCity: "Ajouter une ville",
     removeQ: "Comment supprimer le calendrier ?",
-    removeA: `<strong>Google Agenda</strong> : Paramètres → Ajouter un agenda → Parcourir les agendas d'intérêt public → trouvez l'agenda importé sous "Autres agendas" → menu ⋮ → Se désabonner. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Outlook</strong> : Calendrier → clic droit sur le calendrier dans la liste de gauche → Supprimer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → sélectionnez le calendrier importé dans la barre latérale → Supprimer l'abonnement au calendrier. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">En savoir plus</a><br><br>
-      <strong>Android</strong> : la suppression se fait aussi via calendar.google.com dans un navigateur (même compte Google) — Paramètres → le calendrier importé → Se désabonner ; l'agenda disparaît ensuite de l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">En savoir plus</a>`,
+    removeA: `<strong>Google Agenda</strong> : Paramètres → Ajouter un agenda → Parcourir les agendas d'intérêt public → trouvez l'agenda importé sous "Autres agendas" → menu ⋮ → Se désabonner. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Google Agenda (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Outlook</strong> : Calendrier → clic droit sur le calendrier dans la liste de gauche → Supprimer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="En savoir plus sur Outlook (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → sélectionnez le calendrier importé dans la barre latérale → Supprimer l'abonnement au calendrier. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="En savoir plus sur Apple Calendrier (nouvelle fenêtre)">En savoir plus</a><br><br>
+      <strong>Android</strong> : la suppression se fait aussi via calendar.google.com dans un navigateur (même compte Google) — Paramètres → le calendrier importé → Se désabonner ; l'agenda disparaît ensuite de l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Android (nouvelle fenêtre)">En savoir plus</a>`,
     mailSubject: "Ajouter une ville au calendrier EFS",
     mailBody: "Bonjour,\n\nPourriez-vous ajouter <<ville>> à la liste des villes du calendrier EFS ?\n\nMerci !",
     langAnnounce: "Langue changée : Français",
@@ -328,19 +349,19 @@ const STRINGS = {
     step1: "Choose your city",
     step2: "Add the link to your calendar app",
     step2more: "How?",
-    step2body: `<strong>Google Calendar</strong>: open Google Calendar on desktop → next to "Other calendars", click + → "From URL" → paste the copied link → Add calendar. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a><br><br>
-      <strong>Outlook</strong>: Calendar → Add calendar → Subscribe from web → paste the copied link → Import. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">Learn more</a><br><br>
-      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → File → New Calendar Subscription (or Settings → Accounts → Add Account → Other on iOS) → paste the copied link → Subscribe. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">Learn more</a><br><br>
-      <strong>Android</strong>: the Google Calendar app doesn't let you add a subscription directly. Open calendar.google.com in your phone's browser (or on a computer) signed into the same Google account, add the calendar as described above, and it will appear automatically in the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a>`,
+    step2body: `<strong>Google Calendar</strong>: open Google Calendar on desktop → next to "Other calendars", click + → "From URL" → paste the copied link → Add calendar. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="Learn more about Google Calendar (opens in new tab)">Learn more</a><br><br>
+      <strong>Outlook</strong>: Calendar → Add calendar → Subscribe from web → paste the copied link → Import. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="Learn more about Outlook (opens in new tab)">Learn more</a><br><br>
+      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → File → New Calendar Subscription (or Settings → Accounts → Add Account → Other on iOS) → paste the copied link → Subscribe. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="Learn more about Apple Calendar (opens in new tab)">Learn more</a><br><br>
+      <strong>Android</strong>: the Google Calendar app doesn't let you add a subscription directly. Open calendar.google.com in your phone's browser (or on a computer) signed into the same Google account, add the calendar as described above, and it will appear automatically in the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="Learn more about Android (opens in new tab)">Learn more</a>`,
     copy: "Copy link",
     copied: "Link copied!",
     showLink: "Show link",
     addCity: "Add a city",
     removeQ: "How do I remove the calendar?",
-    removeA: `<strong>Google Calendar</strong>: Settings → Add calendar → Browse calendars of interest → find the imported calendar under "Other calendars" → ⋮ menu → Unsubscribe. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a><br><br>
-      <strong>Outlook</strong>: Calendar → right-click the calendar in the left-hand list → Delete. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener">Learn more</a><br><br>
-      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → select the imported calendar in the sidebar → Delete Calendar Subscription. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener">Learn more</a><br><br>
-      <strong>Android</strong>: removal also happens via calendar.google.com in a browser (same Google account) — Settings → the imported calendar → Unsubscribe; it then disappears from the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener">Learn more</a>`,
+    removeA: `<strong>Google Calendar</strong>: Settings → Add calendar → Browse calendars of interest → find the imported calendar under "Other calendars" → ⋮ menu → Unsubscribe. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="Learn more about Google Calendar (opens in new tab)">Learn more</a><br><br>
+      <strong>Outlook</strong>: Calendar → right-click the calendar in the left-hand list → Delete. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="Learn more about Outlook (opens in new tab)">Learn more</a><br><br>
+      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → select the imported calendar in the sidebar → Delete Calendar Subscription. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="Learn more about Apple Calendar (opens in new tab)">Learn more</a><br><br>
+      <strong>Android</strong>: removal also happens via calendar.google.com in a browser (same Google account) — Settings → the imported calendar → Unsubscribe; it then disappears from the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="Learn more about Android (opens in new tab)">Learn more</a>`,
     mailSubject: "Add a city to the EFS calendar",
     mailBody: "Hello,\n\nCould you please add <<city>> to the list of cities in the EFS calendar?\n\nThanks!",
     langAnnounce: "Language switched: English",
@@ -366,8 +387,10 @@ function applyLang(shouldAnnounce){
     if (STRINGS[lang][key] !== undefined) el.innerHTML = STRINGS[lang][key];
   });
   document.getElementById("lang-label").textContent = lang.toUpperCase();
-  document.getElementById("lang-toggle").title = lang === "fr" ? "Switch to English" : "Passer en français";
+  document.getElementById("lang-toggle").setAttribute("aria-label",
+    lang === "fr" ? "Passer le site en anglais" : "Switch the site to French");
   if (shouldAnnounce) announce(STRINGS[lang].langAnnounce);
+  if (typeof applyTheme === "function") applyTheme(false);
   renderCities();
 }
 
@@ -385,9 +408,10 @@ function applyTheme(shouldAnnounce){
   document.documentElement.setAttribute("data-theme", theme);
   // icon shows what's currently active, not the action
   document.getElementById("theme-icon").textContent = theme === "dark" ? "🌙" : "☀️";
-  document.getElementById("theme-toggle").title = theme === "dark"
-    ? STRINGS[lang].themeDarkAnnounce
-    : STRINGS[lang].themeLightAnnounce;
+  document.getElementById("theme-toggle").setAttribute("aria-label",
+    theme === "dark"
+      ? STRINGS[lang].themeDarkAnnounce
+      : STRINGS[lang].themeLightAnnounce);
   if (shouldAnnounce) announce(theme === "dark" ? STRINGS[lang].themeDarkAnnounce : STRINGS[lang].themeLightAnnounce);
 }
 applyTheme(false);
@@ -416,6 +440,7 @@ async function copyLink(url, btn){
   const original = btn.textContent;
   btn.textContent = t.copied;
   btn.classList.add("copied");
+  announce(t.copied);
   setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1800);
 }
 
