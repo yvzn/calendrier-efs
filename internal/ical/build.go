@@ -24,6 +24,7 @@ func Build(calName string, events []efsapi.Event) *ics.Calendar {
 		vev.SetDtStampTime(now)
 		vev.SetStartAt(ev.Start)
 		vev.SetEndAt(ev.End)
+		vev.SetTimeTransparency(ics.TransparencyTransparent)
 		vev.SetSummary("Don du sang - " + ev.Title)
 		vev.SetLocation(ev.Address)
 		if ev.Lat != 0 || ev.Lon != 0 {
