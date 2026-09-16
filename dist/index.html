@@ -60,10 +60,16 @@
 
   header{
     display:flex;
+    flex-direction:row;
     justify-content:space-between;
     align-items:flex-start;
     gap:12px;
   }
+  @media (max-width:480px){
+    header{
+      flex-direction:column-reverse;
+    }
+  }  
   h1{
     font-size:1.5rem;
     font-weight:800;
@@ -75,6 +81,12 @@
     gap:8px;
     flex-shrink:0;
   }
+  @media (max-width:480px){
+    .toolbar{
+      width:100%;
+      justify-content:flex-end;
+    }
+  }    
   .icon-btn{
     background:none;
     border:1px solid var(--card-border);
