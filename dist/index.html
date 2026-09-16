@@ -133,7 +133,7 @@
     font-size:0.9rem;
     color:var(--text-muted);
   }
-  .efs-link a{ color:var(--link); }
+  .efs-link a{ color:var(--text-muted); }
 
   .step{
     display:flex;
@@ -295,7 +295,7 @@
   <noscript>
     <p class="noscript-warning">
       Cette page a besoin de JavaScript pour afficher la liste des villes et générer les liens de calendrier.
-      Merci d'activer JavaScript dans votre navigateur, ou de <a href="mailto:mail@ludeo.net?subject=Demande%20de%20lien%20de%20calendrier&body=Bonjour,%0D%0A%0D%0AJe%20souhaite%20obtenir%20un%20lien%20de%20calendrier%20pour%20ma%20ville:...">nous écrire directement pour obtenir un lien</a>.
+      Merci d'activer JavaScript dans votre navigateur, ou de <a href="mailto:&#109;&#97;&#105;&#108;&#64;&#108;&#117;&#100;&#101;&#111;&#46;&#110;&#101;&#116;?subject=Demande%20de%20lien%20de%20calendrier&body=Bonjour,%0D%0A%0D%0AJe%20souhaite%20obtenir%20un%20lien%20de%20calendrier%20pour%20ma%20ville:...">nous écrire directement pour obtenir un lien</a>.
     </p>
   </noscript>
   <div class="grid" id="city-grid"></div>
@@ -331,7 +331,7 @@
    named "<normalized>.ics" (e.g. ./paris.ics). Your Go build just needs to
    write locations.json with that shape and drop the matching .ics files alongside. */
 let CITIES = [];
-const MAINTAINER_EMAIL = "mail@ludeo.net";
+const MAINTAINER_EMAIL = ["mail", "ludeo.net"].join("@");
 
 /* ---------- 2. i18n ---------- */
 const STRINGS = {
