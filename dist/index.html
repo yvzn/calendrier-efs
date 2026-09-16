@@ -128,6 +128,12 @@
     font-size:0.92rem;
     margin:0 0 24px;
   }
+  .efs-link{
+    margin:14px 0 0;
+    font-size:0.9rem;
+    color:var(--text-muted);
+  }
+  .efs-link a{ color:var(--link); }
 
   .step{
     display:flex;
@@ -293,6 +299,7 @@
     </p>
   </noscript>
   <div class="grid" id="city-grid"></div>
+  <p class="efs-link" data-i18n="efsLink">Vous cherchez une collecte ponctuelle ? <a href="https://dondesang.efs.sante.fr/trouver-une-collecte" target="_blank" rel="noopener">Consultez le site officiel de l'EFS</a>.</p>
 
   <div class="step"><span class="step-num">2</span><span data-i18n="step2">Ajoutez le lien à votre agenda</span></div>
   <details class="link-reveal step2-details">
@@ -332,6 +339,7 @@ const STRINGS = {
     title: "Calendriers de collecte de sang EFS",
     subtitle: "Ajoutez les prochaines dates de collecte à votre agenda",
     features: "✓ Gratuit ✓ Mise à jour automatique ✓ Désabonnement à tout moment",
+    efsLink: "Vous cherchez une collecte ponctuelle ? <br/><a href=\"https://dondesang.efs.sante.fr/trouver-une-collecte\" target=\"_blank\" rel=\"noopener\">Consultez le site officiel de l'EFS</a>.",
     step1: "Choisissez votre ville",
     step2: "Ajoutez le lien à votre agenda",
     step2more: "Comment faire ?",
@@ -362,6 +370,7 @@ const STRINGS = {
     title: "EFS blood donation calendars",
     subtitle: "Add upcoming donation dates to your calendar",
     features: "✓ Free ✓ Auto-updating ✓ Unsubscribe anytime",
+    efsLink: "Looking for a one-time donation? <br/><a href=\"https://dondesang.efs.sante.fr/trouver-une-collecte\" target=\"_blank\" rel=\"noopener\">Visit the official EFS website</a>.",
     step1: "Choose your city",
     step2: "Add the link to your calendar app",
     step2more: "How?",
