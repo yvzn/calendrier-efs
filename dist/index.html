@@ -239,7 +239,7 @@
   .select-step,
   .confirm-step{
     transition:max-height .2s ease, opacity .2s ease, margin-top .2s ease, transform .2s ease;
-    overflow:hidden;
+    overflow:visible;
   }
   .select-step.hidden,
   .confirm-step.hidden{
@@ -247,6 +247,7 @@
     opacity:0;
     margin:0;
     pointer-events:none;
+    overflow:hidden;
     transform:translateY(-6px);
   }
   .select-step:not(.hidden),
@@ -254,12 +255,14 @@
     opacity:1;
     max-height:600px;
     margin-top: var(--space-md);
+    overflow:visible;
     transform:translateY(0);
   }
   .app-options{
     display:grid;
     grid-template-columns:repeat(3, minmax(0, 1fr));
     gap:12px;
+    padding:2px 0;
   }
   .app-option{
     background:var(--card-bg);
@@ -399,12 +402,16 @@
     display:flex; align-items:center; justify-content:center;
     font-size:1.1rem;
   }
-  button:focus-visible,
-  a:focus-visible,
+  .city-card:focus-visible,
+  .app-option:focus-visible,
+  .confirm-btn:focus-visible,
+  .confirm-link:focus-visible,
   input:focus-visible,
-  summary:focus-visible{
-    outline:3px solid rgba(35,88,201,0.35);
-    outline-offset:2px;
+  summary:focus-visible,
+  button:focus-visible,
+  a:focus-visible{
+    outline:3px solid rgba(35,88,201,0.45);
+    outline-offset:3px;
   }
   @media (max-width: 767px){
     .app-options{ grid-template-columns:1fr; }
