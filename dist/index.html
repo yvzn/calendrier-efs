@@ -510,16 +510,16 @@
         <button type="button" id="other-confirm" class="confirm-btn">Copier le lien du calendrier</button>
         <div class="other-help">
           <details class="disclosure">
-            <summary>Outlook</summary>
-            <div class="disclosure-content">Copiez le lien HTTPS du calendrier, puis ouvrez Outlook → Ajouter un calendrier → À partir du web. Collez ensuite le lien pour l'importer.</div>
+            <summary id="outlook-summary">Outlook</summary>
+            <div id="outlook-content" class="disclosure-content">Copiez le lien HTTPS du calendrier, puis ouvrez Outlook → Ajouter un calendrier → À partir du web. Collez ensuite le lien pour l'importer.</div>
           </details>
           <details class="disclosure">
-            <summary>Android</summary>
-            <div class="disclosure-content">L'application Google Agenda ne permet pas d'ajouter directement un abonnement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou sur un ordinateur) avec le même compte Google, puis ajoutez le calendrier à partir de l'URL. Il apparaîtra ensuite dans l'application Google Agenda.</div>
+            <summary id="android-summary">Android</summary>
+            <div id="android-content" class="disclosure-content">L'application Google Agenda ne permet pas d'ajouter directement un abonnement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou sur un ordinateur) avec le même compte Google, puis ajoutez le calendrier à partir de l'URL. Il apparaîtra ensuite dans l'application Google Agenda.</div>
           </details>
         </div>
         <div id="manual-fallback" class="manual-fallback hidden">
-          <label for="calendar-feed-url">Lien du calendrier</label>
+          <label id="manual-label" for="calendar-feed-url">Lien du calendrier</label>
           <input id="calendar-feed-url" type="text" readonly value="" aria-label="Lien du calendrier">
         </div>
       </div>
@@ -785,12 +785,22 @@ function renderSubscriptionFlow() {
   const otherBlock = document.getElementById("other-confirmation");
   const otherButton = document.getElementById("other-confirm");
   const manualFallback = document.getElementById("manual-fallback");
+  const manualLabel = document.getElementById("manual-label");
   const manualInput = document.getElementById("calendar-feed-url");
+  const outlookSummary = document.getElementById("outlook-summary");
+  const outlookContent = document.getElementById("outlook-content");
+  const androidSummary = document.getElementById("android-summary");
+  const androidContent = document.getElementById("android-content");
   const httpsUrl = buildFeedUrl(city, "https");
 
   googleButton.classList.toggle("hidden", state.chosenApp !== "google");
   appleButton.classList.toggle("hidden", state.chosenApp !== "apple");
   otherBlock.classList.toggle("hidden", state.chosenApp !== "other");
+  outlookSummary.textContent = t.outlookTitle;
+  outlookContent.textContent = t.outlookBody;
+  androidSummary.textContent = t.androidTitle;
+  androidContent.textContent = t.androidBody;
+  manualLabel.textContent = t.manualLabel;
 
   if (state.chosenApp === "google") {
     googleButton.textContent = t.ctaGoogle;
