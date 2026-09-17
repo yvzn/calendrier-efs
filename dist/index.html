@@ -180,6 +180,9 @@
   }
   .city-card{
     width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     text-align:left;
     border:1px solid var(--card-border);
     border-radius:var(--radius-card);
@@ -190,7 +193,7 @@
     font:inherit;
     cursor:pointer;
     transition:border-color .2s ease, background-color .2s ease, transform .15s ease;
-    min-height:44px;
+    min-height:100px;
   }
   .city-card:hover{ background:var(--accent-bg); }
   .city-card.selected{
@@ -264,6 +267,9 @@
     gap:12px;
     padding:2px 0;
   }
+  .hidden{
+    display:none !important;
+  }
   .app-option{
     background:var(--card-bg);
     border:1px solid var(--card-border);
@@ -313,8 +319,8 @@
   }
   .disclosure{
     border:1px solid var(--card-border);
-    border-radius:10px;
-    background:var(--bg);
+    border-radius:8px;
+    background:var(--card-bg);
     overflow:hidden;
   }
   .disclosure summary{
@@ -482,12 +488,42 @@
 
   <div class="step"><span class="step-num">2</span><span data-i18n="step2">Choisissez votre application</span></div>
   <div id="app-step" class="select-step hidden" aria-live="polite">
-    <div class="app-options" id="app-options"></div>
+    <div class="app-options" id="app-options">
+      <button type="button" class="app-option" id="app-google" data-app="google" aria-pressed="false">
+        <span class="app-icon">📅</span><span>Google Calendar</span>
+      </button>
+      <button type="button" class="app-option" id="app-apple" data-app="apple" aria-pressed="false">
+        <span class="app-icon">🍏</span><span>Calendrier Apple</span>
+      </button>
+      <button type="button" class="app-option" id="app-other" data-app="other" aria-pressed="false">
+        <span class="app-icon">🔗</span><span>Autre</span>
+      </button>
+    </div>
   </div>
 
-  <div class="step"><span class="step-num">3</span><span data-i18n="step3">Confirmez l'action</span></div>
+  <div class="step"><span class="step-num">3</span><span data-i18n="step3">Ajouter à votre agenda</span></div>
   <div id="confirm-step" class="confirm-step hidden" aria-live="polite">
-    <div id="confirm-content" class="confirm-content"></div>
+    <div id="confirm-content" class="confirm-content">
+      <button type="button" id="google-confirm" class="confirm-btn hidden">Ouvrir dans Google Calendar</button>
+      <a id="apple-confirm" class="confirm-link hidden" href="">Ouvrir dans Calendrier</a>
+      <div id="other-confirmation" class="other-confirmation hidden">
+        <button type="button" id="other-confirm" class="confirm-btn">Copier le lien du calendrier</button>
+        <div class="other-help">
+          <details class="disclosure">
+            <summary>Outlook</summary>
+            <div class="disclosure-content">Copiez le lien HTTPS du calendrier, puis ouvrez Outlook → Ajouter un calendrier → À partir du web. Collez ensuite le lien pour l'importer.</div>
+          </details>
+          <details class="disclosure">
+            <summary>Android</summary>
+            <div class="disclosure-content">L'application Google Agenda ne permet pas d'ajouter directement un abonnement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou sur un ordinateur) avec le même compte Google, puis ajoutez le calendrier à partir de l'URL. Il apparaîtra ensuite dans l'application Google Agenda.</div>
+          </details>
+        </div>
+        <div id="manual-fallback" class="manual-fallback hidden">
+          <label for="calendar-feed-url">Lien du calendrier</label>
+          <input id="calendar-feed-url" type="text" readonly value="" aria-label="Lien du calendrier">
+        </div>
+      </div>
+    </div>
   </div>
 
   <footer>
@@ -521,7 +557,7 @@ const STRINGS = {
     efsLink: "Vous cherchez une collecte ponctuelle ? <br/><a href=\"https://dondesang.efs.sante.fr/trouver-une-collecte\" target=\"_blank\" rel=\"noopener\">Consultez le site officiel de l'EFS</a>.",
     step1: "Choisissez votre ville",
     step2: "Choisissez votre application",
-    step3: "Confirmez l'action",
+    step3: "Ajouter à votre agenda",
     appGoogle: "Google Calendar",
     appApple: "Calendrier Apple",
     appOther: "Autre",
@@ -562,7 +598,7 @@ const STRINGS = {
     efsLink: "Looking for a one-time donation? <br/><a href=\"https://dondesang.efs.sante.fr/trouver-une-collecte\" target=\"_blank\" rel=\"noopener\">Visit the official EFS website</a>.",
     step1: "Choose your city",
     step2: "Choose your app",
-    step3: "Confirm the action",
+    step3: "Add to your calendar",
     appGoogle: "Google Calendar",
     appApple: "Apple Calendar",
     appOther: "Other",
@@ -724,28 +760,15 @@ function renderSubscriptionFlow() {
   }
 
   const t = STRINGS[lang];
-  const appOptions = document.getElementById("app-options");
-  appOptions.innerHTML = `
-    <button type="button" class="app-option ${state.chosenApp === "google" ? "active" : ""}" data-app="google" aria-pressed="${state.chosenApp === "google"}">
-      <span class="app-icon">📅</span><span>${t.appGoogle}</span>
-    </button>
-    <button type="button" class="app-option ${state.chosenApp === "apple" ? "active" : ""}" data-app="apple" aria-pressed="${state.chosenApp === "apple"}">
-      <span class="app-icon">🍏</span><span>${t.appApple}</span>
-    </button>
-    <button type="button" class="app-option ${state.chosenApp === "other" ? "active" : ""}" data-app="other" aria-pressed="${state.chosenApp === "other"}">
-      <span class="app-icon">🔗</span><span>${t.appOther}</span>
-    </button>
-  `;
+  const appButtons = Array.from(document.querySelectorAll(".app-option"));
 
-  appOptions.querySelectorAll(".app-option").forEach((button) => {
-    button.addEventListener("click", () => {
-      const nextApp = button.dataset.app;
-      if (!nextApp || nextApp === state.chosenApp) return;
-      state.chosenApp = nextApp;
-      state.confirmState = "idle";
-      resetCopyTimer();
-      renderSubscriptionFlow();
-    });
+  appButtons.forEach((button) => {
+    const label = button.querySelector("span:last-child");
+    const appKey = button.dataset.app;
+    if (label) label.textContent = appKey === "google" ? t.appGoogle : appKey === "apple" ? t.appApple : t.appOther;
+    const isActive = button.dataset.app === state.chosenApp;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
 
   if (!state.chosenApp) {
@@ -757,92 +780,106 @@ function renderSubscriptionFlow() {
   appStep.classList.remove("hidden");
   confirmStep.classList.remove("hidden");
 
-  const content = document.getElementById("confirm-content");
+  const googleButton = document.getElementById("google-confirm");
+  const appleButton = document.getElementById("apple-confirm");
+  const otherBlock = document.getElementById("other-confirmation");
+  const otherButton = document.getElementById("other-confirm");
+  const manualFallback = document.getElementById("manual-fallback");
+  const manualInput = document.getElementById("calendar-feed-url");
   const httpsUrl = buildFeedUrl(city, "https");
 
+  googleButton.classList.toggle("hidden", state.chosenApp !== "google");
+  appleButton.classList.toggle("hidden", state.chosenApp !== "apple");
+  otherBlock.classList.toggle("hidden", state.chosenApp !== "other");
+
   if (state.chosenApp === "google") {
-    content.innerHTML = `
-      <button type="button" class="confirm-btn" id="google-confirm">${t.ctaGoogle}</button>
-    `;
-    const googleButton = document.getElementById("google-confirm");
-    googleButton.addEventListener("click", () => {
-      if (googleClickLock) return;
-      googleClickLock = true;
-      window.open(buildGoogleLink(city), "_blank", "noopener,noreferrer");
-      setTimeout(() => { googleClickLock = false; }, 200);
-    });
+    googleButton.textContent = t.ctaGoogle;
+    googleButton.disabled = false;
     return;
   }
 
   if (state.chosenApp === "apple") {
-    content.innerHTML = `
-      <a class="confirm-link" href="${buildAppleLink(city)}">${t.ctaApple}</a>
-    `;
+    appleButton.href = buildAppleLink(city);
+    appleButton.textContent = t.ctaApple;
     return;
   }
 
   const buttonLabel = state.confirmState === "copied" ? `✓ ${t.copySuccess}` : t.ctaOther;
-  content.innerHTML = `
-    <button type="button" class="confirm-btn ${state.confirmState === "copied" ? "success" : ""}" id="other-confirm">${buttonLabel}</button>
-    <div class="other-help">
-      <details class="disclosure">
-        <summary>${t.outlookTitle}</summary>
-        <div class="disclosure-content">${t.outlookBody}</div>
-      </details>
-      <details class="disclosure">
-        <summary>${t.androidTitle}</summary>
-        <div class="disclosure-content">${t.androidBody}</div>
-      </details>
-    </div>
-    ${state.confirmState === "manual" ? `
-      <div class="manual-fallback">
-        <label for="calendar-feed-url">${t.manualLabel}</label>
-        <input id="calendar-feed-url" type="text" readonly value="${httpsUrl}" aria-label="${t.manualLabel}">
-      </div>
-    ` : ""}
-  `;
+  otherButton.textContent = buttonLabel;
+  otherButton.classList.toggle("success", state.confirmState === "copied");
 
-  const otherButton = document.getElementById("other-confirm");
-  otherButton.addEventListener("click", async () => {
-    if (otherCopyLock) return;
-    otherCopyLock = true;
-
-    const canCopy = window.isSecureContext && navigator.clipboard && typeof navigator.clipboard.writeText === "function";
-    if (!canCopy) {
-      state.confirmState = "manual";
-      announceCopyOutcome(t.copyFallbackAnnouncement);
-      renderSubscriptionFlow();
-      setTimeout(() => { otherCopyLock = false; }, 250);
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(httpsUrl);
-      state.confirmState = "copied";
-      announceCopyOutcome(t.copySuccessAnnouncement);
-      renderSubscriptionFlow();
-      resetCopyTimer();
-      copyResetTimer = setTimeout(() => {
-        state.confirmState = "idle";
-        renderSubscriptionFlow();
-      }, 2000);
-    } catch (error) {
-      state.confirmState = "manual";
-      announceCopyOutcome(t.copyFallbackAnnouncement);
-      renderSubscriptionFlow();
-    } finally {
-      setTimeout(() => { otherCopyLock = false; }, 250);
-    }
-  });
-
-  const manualInput = document.getElementById("calendar-feed-url");
-  if (manualInput) {
+  if (state.confirmState === "manual") {
+    manualFallback.classList.remove("hidden");
+    manualInput.value = httpsUrl;
+    manualInput.setAttribute("aria-label", t.manualLabel);
     requestAnimationFrame(() => {
       manualInput.focus();
       manualInput.select();
     });
+  } else {
+    manualFallback.classList.add("hidden");
+    manualInput.value = httpsUrl;
   }
 }
+
+const appButtons = Array.from(document.querySelectorAll(".app-option"));
+appButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const nextApp = button.dataset.app;
+    if (!nextApp || nextApp === state.chosenApp) return;
+    state.chosenApp = nextApp;
+    state.confirmState = "idle";
+    resetCopyTimer();
+    renderSubscriptionFlow();
+  });
+});
+
+const googleButton = document.getElementById("google-confirm");
+const otherButton = document.getElementById("other-confirm");
+
+googleButton.addEventListener("click", () => {
+  const city = getSelectedCity();
+  if (!city) return;
+  if (googleClickLock) return;
+  googleClickLock = true;
+  window.open(buildGoogleLink(city), "_blank", "noopener,noreferrer");
+  setTimeout(() => { googleClickLock = false; }, 200);
+});
+
+otherButton.addEventListener("click", async () => {
+  const city = getSelectedCity();
+  if (!city) return;
+  if (otherCopyLock) return;
+  otherCopyLock = true;
+
+  const httpsUrl = buildFeedUrl(city, "https");
+  const canCopy = window.isSecureContext && navigator.clipboard && typeof navigator.clipboard.writeText === "function";
+  if (!canCopy) {
+    state.confirmState = "manual";
+    announceCopyOutcome(STRINGS[lang].copyFallbackAnnouncement);
+    renderSubscriptionFlow();
+    setTimeout(() => { otherCopyLock = false; }, 250);
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(httpsUrl);
+    state.confirmState = "copied";
+    announceCopyOutcome(STRINGS[lang].copySuccessAnnouncement);
+    renderSubscriptionFlow();
+    resetCopyTimer();
+    copyResetTimer = setTimeout(() => {
+      state.confirmState = "idle";
+      renderSubscriptionFlow();
+    }, 2000);
+  } catch (error) {
+    state.confirmState = "manual";
+    announceCopyOutcome(STRINGS[lang].copyFallbackAnnouncement);
+    renderSubscriptionFlow();
+  } finally {
+    setTimeout(() => { otherCopyLock = false; }, 250);
+  }
+});
 
 function applyLang(shouldAnnounce) {
   document.documentElement.lang = lang;
