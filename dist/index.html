@@ -178,6 +178,26 @@
     background:var(--card-bg);
     box-shadow:var(--shadow);
   }
+  .city-card{
+    width:100%;
+    text-align:left;
+    border:1px solid var(--card-border);
+    border-radius:var(--radius-card);
+    padding:var(--space-md);
+    background:var(--card-bg);
+    box-shadow:var(--shadow);
+    color:var(--text);
+    font:inherit;
+    cursor:pointer;
+    transition:border-color .2s ease, background-color .2s ease, transform .15s ease;
+    min-height:44px;
+  }
+  .city-card:hover{ background:var(--accent-bg); }
+  .city-card.selected{
+    border:2px solid var(--accent);
+    background:var(--accent-bg);
+  }
+  .city-card.selected .card-title strong{ color:var(--accent); }
   .card-title{
     display:flex;
     align-items:center;
@@ -189,21 +209,151 @@
     color:var(--text-muted);
     font-weight:600;
   }
-  .copy-btn{
+  .copy-btn,
+  .app-option,
+  .confirm-btn,
+  .confirm-link{
     width:100%;
+    min-height:44px;
+    border-radius:10px;
+    padding:11px 12px;
+    font-weight:700;
+    font-size:0.95rem;
+    font-family:inherit;
+    line-height:1.3;
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
+  }
+  .copy-btn,
+  .app-option,
+  .confirm-btn{
+    cursor:pointer;
+  }
+  .copy-btn{
     background:var(--accent-bg);
     color:var(--accent);
-    border:none;
-    border-radius:10px;
-    padding:9px 10px;
-    font-weight:700;
-    font-size:0.9rem;
-    cursor:pointer;
-    font-family:inherit;
+    border:1px solid transparent;
   }
   .copy-btn:hover{ background:var(--accent-bg-hover); }
   .copy-btn.copied{ background:#2fb669; color:#fff; }
 
+  .select-step,
+  .confirm-step{
+    transition:max-height .2s ease, opacity .2s ease, margin-top .2s ease, transform .2s ease;
+    overflow:hidden;
+  }
+  .select-step.hidden,
+  .confirm-step.hidden{
+    max-height:0;
+    opacity:0;
+    margin:0;
+    pointer-events:none;
+    transform:translateY(-6px);
+  }
+  .select-step:not(.hidden),
+  .confirm-step:not(.hidden){
+    opacity:1;
+    max-height:600px;
+    margin-top: var(--space-md);
+    transform:translateY(0);
+  }
+  .app-options{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:12px;
+  }
+  .app-option{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    color:var(--text);
+    text-align:left;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .app-option.active{
+    border:2px solid var(--accent);
+    background:var(--accent-bg);
+    color:var(--accent);
+    font-weight:800;
+  }
+  .app-option .app-icon{
+    margin-right:8px;
+    font-size:1.1rem;
+  }
+  .confirm-content{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .confirm-btn,
+  .confirm-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    background:var(--accent-bg);
+    color:var(--accent);
+  }
+  .confirm-btn:hover,
+  .confirm-link:hover{ background:var(--accent-bg-hover); }
+  .confirm-btn.success{
+    background:#2fb669;
+    border-color:#2fb669;
+    color:#fff;
+  }
+  .other-help{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:4px;
+  }
+  .disclosure{
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    background:var(--bg);
+    overflow:hidden;
+  }
+  .disclosure summary{
+    list-style:none;
+    cursor:pointer;
+    padding:10px 12px;
+    font-weight:700;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .disclosure summary::-webkit-details-marker{ display:none; }
+  .disclosure summary::before{ content:"▶"; font-size:0.7rem; color:var(--text-muted); }
+  .disclosure[open] summary::before{ content:"▼"; }
+  .disclosure-content{
+    padding:0 12px 12px;
+    color:var(--text-muted);
+    font-size:0.88rem;
+    line-height:1.5;
+  }
+  .manual-fallback{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:4px;
+  }
+  .manual-fallback label{
+    font-size:0.82rem;
+    font-weight:700;
+    color:var(--text-muted);
+  }
+  .manual-fallback input{
+    width:100%;
+    min-height:44px;
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    background:var(--card-bg);
+    color:var(--text);
+    padding:10px 12px;
+    font:inherit;
+  }
   details.link-reveal{ margin-top:var(--space-sm); }
   details.link-reveal summary{
     color:var(--text-muted);
@@ -248,6 +398,17 @@
     border:1.5px solid var(--card-border);
     display:flex; align-items:center; justify-content:center;
     font-size:1.1rem;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  summary:focus-visible{
+    outline:3px solid rgba(35,88,201,0.35);
+    outline-offset:2px;
+  }
+  @media (max-width: 767px){
+    .app-options{ grid-template-columns:1fr; }
+    .confirm-btn, .confirm-link{ width:100%; }
   }
 
   .step2-details{ margin-bottom:var(--space-sm); }
@@ -312,15 +473,15 @@
   <div class="grid" id="city-grid"></div>
   <p class="efs-link" data-i18n="efsLink">Vous cherchez une collecte ponctuelle ? <a href="https://dondesang.efs.sante.fr/trouver-une-collecte" target="_blank" rel="noopener">Consultez le site officiel de l'EFS</a>.</p>
 
-  <div class="step"><span class="step-num">2</span><span data-i18n="step2">Ajoutez le lien à votre agenda</span></div>
-  <details class="link-reveal step2-details">
-    <summary data-i18n="step2more">Comment faire ?</summary>
-    <div class="faq-body" data-i18n="step2body">
-      <strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Google Agenda (nouvelle fenêtre)">En savoir plus</a><br><br>
-      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="En savoir plus sur Outlook (nouvelle fenêtre)">En savoir plus</a><br><br>
-      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="En savoir plus sur Apple Calendrier (nouvelle fenêtre)">En savoir plus</a>
-    </div>
-  </details>
+  <div class="step"><span class="step-num">2</span><span data-i18n="step2">Choisissez votre application</span></div>
+  <div id="app-step" class="select-step hidden" aria-live="polite">
+    <div class="app-options" id="app-options"></div>
+  </div>
+
+  <div class="step"><span class="step-num">3</span><span data-i18n="step3">Confirmez l'action</span></div>
+  <div id="confirm-step" class="confirm-step hidden" aria-live="polite">
+    <div id="confirm-content" class="confirm-content"></div>
+  </div>
 
   <footer>
     <details class="link-reveal">
@@ -352,12 +513,22 @@ const STRINGS = {
     features: "✓ Gratuit ✓ Mise à jour automatique ✓ Désabonnement à tout moment",
     efsLink: "Vous cherchez une collecte ponctuelle ? <br/><a href=\"https://dondesang.efs.sante.fr/trouver-une-collecte\" target=\"_blank\" rel=\"noopener\">Consultez le site officiel de l'EFS</a>.",
     step1: "Choisissez votre ville",
-    step2: "Ajoutez le lien à votre agenda",
-    step2more: "Comment faire ?",
-    step2body: `<strong>Google Agenda</strong> : ouvrez Google Agenda sur ordinateur → à côté de "Autres agendas", cliquez sur + → "À partir de l'URL" → collez le lien copié → Ajouter l'agenda. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Google Agenda (nouvelle fenêtre)">En savoir plus</a><br><br>
-      <strong>Outlook</strong> : Calendrier → Ajouter un calendrier → S'abonner à partir du web → collez le lien copié → Importer. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="En savoir plus sur Outlook (nouvelle fenêtre)">En savoir plus</a><br><br>
-      <strong>Apple (macOS/iOS)</strong> : ouvrez l'app Calendrier → Fichier → Nouvel abonnement à un calendrier (ou Réglages → Comptes → Ajouter un compte → Autre, sur iOS) → collez le lien copié → S'abonner. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="En savoir plus sur Apple Calendrier (nouvelle fenêtre)">En savoir plus</a><br><br>
-      <strong>Android</strong> : l'application Google Agenda ne permet pas d'ajouter un abonnement directement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou d'un ordinateur) avec le même compte Google, ajoutez le calendrier comme ci-dessus : il apparaîtra ensuite automatiquement dans l'application. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="En savoir plus sur Android (nouvelle fenêtre)">En savoir plus</a>`,
+    step2: "Choisissez votre application",
+    step3: "Confirmez l'action",
+    appGoogle: "Google Calendar",
+    appApple: "Calendrier Apple",
+    appOther: "Autre",
+    ctaGoogle: "Ouvrir dans Google Calendar",
+    ctaApple: "Ouvrir dans Calendrier",
+    ctaOther: "Copier le lien du calendrier",
+    copySuccess: "Copié !",
+    copySuccessAnnouncement: "Lien copié.",
+    copyFallbackAnnouncement: "Copie automatique impossible. Utilisez le champ ci-dessous, ou consultez les instructions pour Outlook et Android.",
+    manualLabel: "Lien du calendrier",
+    outlookTitle: "Outlook",
+    outlookBody: "Copiez le lien HTTPS du calendrier, puis ouvrez Outlook → Ajouter un calendrier → À partir du web. Collez ensuite le lien pour l'importer.",
+    androidTitle: "Android",
+    androidBody: "L'application Google Agenda ne permet pas d'ajouter directement un abonnement. Ouvrez calendar.google.com dans le navigateur de votre téléphone (ou sur un ordinateur) avec le même compte Google, puis ajoutez le calendrier à partir de l'URL. Il apparaîtra ensuite dans l'application Google Agenda.",
     copy: "Copier le lien",
     copied: "Lien copié !",
     showLink: "Afficher le lien",
@@ -383,12 +554,22 @@ const STRINGS = {
     features: "✓ Free ✓ Auto-updating ✓ Unsubscribe anytime",
     efsLink: "Looking for a one-time donation? <br/><a href=\"https://dondesang.efs.sante.fr/trouver-une-collecte\" target=\"_blank\" rel=\"noopener\">Visit the official EFS website</a>.",
     step1: "Choose your city",
-    step2: "Add the link to your calendar app",
-    step2more: "How?",
-    step2body: `<strong>Google Calendar</strong>: open Google Calendar on desktop → next to "Other calendars", click + → "From URL" → paste the copied link → Add calendar. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="Learn more about Google Calendar (opens in new tab)">Learn more</a><br><br>
-      <strong>Outlook</strong>: Calendar → Add calendar → Subscribe from web → paste the copied link → Import. <a href="https://support.microsoft.com/office/import-or-subscribe-to-a-calendar-in-outlook-com-cff1429c-5af6-41ec-a5b4-74f2c278e98c" target="_blank" rel="noopener" aria-label="Learn more about Outlook (opens in new tab)">Learn more</a><br><br>
-      <strong>Apple (macOS/iOS)</strong>: open the Calendar app → File → New Calendar Subscription (or Settings → Accounts → Add Account → Other on iOS) → paste the copied link → Subscribe. <a href="https://support.apple.com/guide/calendar/subscribe-to-calendars-icl1022/mac" target="_blank" rel="noopener" aria-label="Learn more about Apple Calendar (opens in new tab)">Learn more</a><br><br>
-      <strong>Android</strong>: the Google Calendar app doesn't let you add a subscription directly. Open calendar.google.com in your phone's browser (or on a computer) signed into the same Google account, add the calendar as described above, and it will appear automatically in the app. <a href="https://support.google.com/calendar/answer/37100" target="_blank" rel="noopener" aria-label="Learn more about Android (opens in new tab)">Learn more</a>`,
+    step2: "Choose your app",
+    step3: "Confirm the action",
+    appGoogle: "Google Calendar",
+    appApple: "Apple Calendar",
+    appOther: "Other",
+    ctaGoogle: "Open in Google Calendar",
+    ctaApple: "Open in Calendar",
+    ctaOther: "Copy calendar link",
+    copySuccess: "Copied!",
+    copySuccessAnnouncement: "Link copied.",
+    copyFallbackAnnouncement: "Automatic copy is unavailable. Use the field below, or consult the Outlook and Android instructions.",
+    manualLabel: "Calendar link",
+    outlookTitle: "Outlook",
+    outlookBody: "Copy the HTTPS calendar link, then open Outlook → Add calendar → From web. Paste the link to import it.",
+    androidTitle: "Android",
+    androidBody: "The Google Calendar app does not support direct subscription imports. Open calendar.google.com in your phone's browser (or on a computer) with the same Google account, then add the calendar from the URL. It will then appear in the Google Calendar app.",
     copy: "Copy link",
     copied: "Link copied!",
     showLink: "Show link",
@@ -419,20 +600,6 @@ function announce(msg){
 
 let lang = localStorage.getItem("lang") || (navigator.language.startsWith("fr") ? "fr" : "en");
 
-function applyLang(shouldAnnounce){
-  document.documentElement.lang = lang;
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (STRINGS[lang][key] !== undefined) el.innerHTML = STRINGS[lang][key];
-  });
-  document.getElementById("lang-label").textContent = lang.toUpperCase();
-  document.getElementById("lang-toggle-desc").textContent = STRINGS[lang].langToggleDesc;
-  document.getElementById("github-link-desc").textContent = STRINGS[lang].githubLinkDesc;
-  if (shouldAnnounce) announce(STRINGS[lang].langAnnounce);
-  if (typeof applyTheme === "function") applyTheme(false);
-  renderCities();
-}
-
 document.getElementById("lang-toggle").addEventListener("click", () => {
   lang = lang === "fr" ? "en" : "fr";
   localStorage.setItem("lang", lang);
@@ -458,53 +625,77 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
   applyTheme(true);
 });
 
-/* ---------- 4. clipboard copy with fallback ---------- */
-async function copyLink(url, btn){
-  const t = STRINGS[lang];
-  try{
-    await navigator.clipboard.writeText(url);
-  }catch(e){
-    const ta = document.createElement("textarea");
-    ta.value = url;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    try{ document.execCommand("copy"); }catch(e2){}
-    document.body.removeChild(ta);
-  }
-  const original = btn.textContent;
-  btn.textContent = t.copied;
-  btn.classList.add("copied");
-  announce(t.copied);
-  setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1800);
+const FEED_HOST = "ludeo.net";
+const FEED_BASE_PATH = "/calendrier-efs";
+
+const state = {
+  selectedCity: null,
+  chosenApp: null,
+  confirmState: "idle"
+};
+
+let copyResetTimer = null;
+let otherCopyLock = false;
+let googleClickLock = false;
+
+function buildFeedUrl(city, scheme) {
+  return `${scheme}://${FEED_HOST}${FEED_BASE_PATH}/${city.normalized}.ics`;
 }
 
-/* ---------- 5. render city cards ---------- */
-function renderCities(){
+function buildGoogleLink(city) {
+  const webcalUrl = buildFeedUrl(city, "webcal");
+  return `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcalUrl)}`;
+}
+
+function buildAppleLink(city) {
+  return buildFeedUrl(city, "webcal");
+}
+
+function getSelectedCity() {
+  return CITIES.find((city) => city.normalized === state.selectedCity) || null;
+}
+
+function resetCopyTimer() {
+  if (copyResetTimer) {
+    clearTimeout(copyResetTimer);
+    copyResetTimer = null;
+  }
+}
+
+function announceCopyOutcome(message) {
+  announce(message);
+}
+
+function renderCities() {
   const t = STRINGS[lang];
   const grid = document.getElementById("city-grid");
   grid.innerHTML = "";
 
-  if (citiesLoadFailed){
+  if (citiesLoadFailed) {
     grid.innerHTML = `<p style="color:var(--text-muted)">${t.loadError}</p>`;
     return;
   }
 
-  CITIES.forEach(c => {
-    const icsUrl = new URL(`./${c.normalized}.ics`, window.location.href).href;
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="card-title">🗓️ ${c.name} <span class="zip">${c.postalCode}</span></div>
-      <button class="copy-btn">${t.copy}</button>
-      <details class="link-reveal">
-        <summary>${t.showLink}</summary>
-        <span class="raw-link">${icsUrl}</span>
-      </details>
+  CITIES.forEach((city) => {
+    const isSelected = state.selectedCity === city.normalized;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `city-card${isSelected ? " selected" : ""}`;
+    button.setAttribute("aria-pressed", String(isSelected));
+    button.dataset.normalized = city.normalized;
+    button.innerHTML = `
+      <div class="card-title"><strong>🗓️ ${city.name}</strong> <span class="zip">${city.postalCode}</span></div>
     `;
-    card.querySelector(".copy-btn").addEventListener("click", (e) => copyLink(icsUrl, e.target));
-    grid.appendChild(card);
+    button.addEventListener("click", () => {
+      if (state.selectedCity === city.normalized) return;
+      state.selectedCity = city.normalized;
+      state.chosenApp = null;
+      state.confirmState = "idle";
+      resetCopyTimer();
+      renderCities();
+      renderSubscriptionFlow();
+    });
+    grid.appendChild(button);
   });
 
   const addCard = document.createElement("a");
@@ -514,12 +705,159 @@ function renderCities(){
   grid.appendChild(addCard);
 }
 
+function renderSubscriptionFlow() {
+  const appStep = document.getElementById("app-step");
+  const confirmStep = document.getElementById("confirm-step");
+  const city = getSelectedCity();
+
+  if (!city) {
+    appStep.classList.add("hidden");
+    confirmStep.classList.add("hidden");
+    return;
+  }
+
+  const t = STRINGS[lang];
+  const appOptions = document.getElementById("app-options");
+  appOptions.innerHTML = `
+    <button type="button" class="app-option ${state.chosenApp === "google" ? "active" : ""}" data-app="google" aria-pressed="${state.chosenApp === "google"}">
+      <span class="app-icon">📅</span><span>${t.appGoogle}</span>
+    </button>
+    <button type="button" class="app-option ${state.chosenApp === "apple" ? "active" : ""}" data-app="apple" aria-pressed="${state.chosenApp === "apple"}">
+      <span class="app-icon">🍏</span><span>${t.appApple}</span>
+    </button>
+    <button type="button" class="app-option ${state.chosenApp === "other" ? "active" : ""}" data-app="other" aria-pressed="${state.chosenApp === "other"}">
+      <span class="app-icon">🔗</span><span>${t.appOther}</span>
+    </button>
+  `;
+
+  appOptions.querySelectorAll(".app-option").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextApp = button.dataset.app;
+      if (!nextApp || nextApp === state.chosenApp) return;
+      state.chosenApp = nextApp;
+      state.confirmState = "idle";
+      resetCopyTimer();
+      renderSubscriptionFlow();
+    });
+  });
+
+  if (!state.chosenApp) {
+    appStep.classList.remove("hidden");
+    confirmStep.classList.add("hidden");
+    return;
+  }
+
+  appStep.classList.remove("hidden");
+  confirmStep.classList.remove("hidden");
+
+  const content = document.getElementById("confirm-content");
+  const httpsUrl = buildFeedUrl(city, "https");
+
+  if (state.chosenApp === "google") {
+    content.innerHTML = `
+      <button type="button" class="confirm-btn" id="google-confirm">${t.ctaGoogle}</button>
+    `;
+    const googleButton = document.getElementById("google-confirm");
+    googleButton.addEventListener("click", () => {
+      if (googleClickLock) return;
+      googleClickLock = true;
+      window.open(buildGoogleLink(city), "_blank", "noopener,noreferrer");
+      setTimeout(() => { googleClickLock = false; }, 200);
+    });
+    return;
+  }
+
+  if (state.chosenApp === "apple") {
+    content.innerHTML = `
+      <a class="confirm-link" href="${buildAppleLink(city)}">${t.ctaApple}</a>
+    `;
+    return;
+  }
+
+  const buttonLabel = state.confirmState === "copied" ? `✓ ${t.copySuccess}` : t.ctaOther;
+  content.innerHTML = `
+    <button type="button" class="confirm-btn ${state.confirmState === "copied" ? "success" : ""}" id="other-confirm">${buttonLabel}</button>
+    <div class="other-help">
+      <details class="disclosure">
+        <summary>${t.outlookTitle}</summary>
+        <div class="disclosure-content">${t.outlookBody}</div>
+      </details>
+      <details class="disclosure">
+        <summary>${t.androidTitle}</summary>
+        <div class="disclosure-content">${t.androidBody}</div>
+      </details>
+    </div>
+    ${state.confirmState === "manual" ? `
+      <div class="manual-fallback">
+        <label for="calendar-feed-url">${t.manualLabel}</label>
+        <input id="calendar-feed-url" type="text" readonly value="${httpsUrl}" aria-label="${t.manualLabel}">
+      </div>
+    ` : ""}
+  `;
+
+  const otherButton = document.getElementById("other-confirm");
+  otherButton.addEventListener("click", async () => {
+    if (otherCopyLock) return;
+    otherCopyLock = true;
+
+    const canCopy = window.isSecureContext && navigator.clipboard && typeof navigator.clipboard.writeText === "function";
+    if (!canCopy) {
+      state.confirmState = "manual";
+      announceCopyOutcome(t.copyFallbackAnnouncement);
+      renderSubscriptionFlow();
+      setTimeout(() => { otherCopyLock = false; }, 250);
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(httpsUrl);
+      state.confirmState = "copied";
+      announceCopyOutcome(t.copySuccessAnnouncement);
+      renderSubscriptionFlow();
+      resetCopyTimer();
+      copyResetTimer = setTimeout(() => {
+        state.confirmState = "idle";
+        renderSubscriptionFlow();
+      }, 2000);
+    } catch (error) {
+      state.confirmState = "manual";
+      announceCopyOutcome(t.copyFallbackAnnouncement);
+      renderSubscriptionFlow();
+    } finally {
+      setTimeout(() => { otherCopyLock = false; }, 250);
+    }
+  });
+
+  const manualInput = document.getElementById("calendar-feed-url");
+  if (manualInput) {
+    requestAnimationFrame(() => {
+      manualInput.focus();
+      manualInput.select();
+    });
+  }
+}
+
+function applyLang(shouldAnnounce) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (STRINGS[lang][key] !== undefined) el.innerHTML = STRINGS[lang][key];
+  });
+  document.getElementById("lang-label").textContent = lang.toUpperCase();
+  document.getElementById("lang-toggle-desc").textContent = STRINGS[lang].langToggleDesc;
+  document.getElementById("github-link-desc").textContent = STRINGS[lang].githubLinkDesc;
+  if (shouldAnnounce) announce(STRINGS[lang].langAnnounce);
+  if (typeof applyTheme === "function") applyTheme(false);
+  renderCities();
+  renderSubscriptionFlow();
+}
+
 /* ---------- 6. load data, then do the first render ---------- */
 let citiesLoadFailed = false;
 
 fetch("./locations.json")
-  .then(res => { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
-  .then(data => { CITIES = data; })
+  .then((res) => { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+  .then((data) => { CITIES = data; })
   .catch(() => { citiesLoadFailed = true; })
   .finally(() => applyLang(false));
 </script>
