@@ -264,7 +264,7 @@
   .app-options{
     display:grid;
     grid-template-columns:repeat(3, minmax(0, 1fr));
-    gap:12px;
+    gap:var(--space-md);
     padding:2px 0;
   }
   .hidden{
@@ -283,16 +283,15 @@
     border:2px solid var(--accent);
     background:var(--accent-bg);
     color:var(--accent);
-    font-weight:800;
   }
   .app-option .app-icon{
-    margin-right:8px;
+    margin-right:var(--space-sm);
     font-size:1.1rem;
   }
   .confirm-content{
     display:flex;
     flex-direction:column;
-    gap:12px;
+    gap:var(--space-md);
   }
   .confirm-btn,
   .confirm-link{
@@ -314,8 +313,8 @@
   .other-help{
     display:flex;
     flex-direction:column;
-    gap:12px;
-    margin-top:4px;
+    gap:var(--space-md);
+    margin-top:var(--space-md);
   }
   .disclosure{
     border:1px solid var(--card-border);
@@ -326,18 +325,18 @@
   .disclosure summary{
     list-style:none;
     cursor:pointer;
-    padding:10px 12px;
+    padding:var(--space-sm) var(--space-md);
     font-weight:700;
     color:var(--text);
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:var(--space-sm);
   }
   .disclosure summary::-webkit-details-marker{ display:none; }
   .disclosure summary::before{ content:"▶"; font-size:0.7rem; color:var(--text-muted); }
   .disclosure[open] summary::before{ content:"▼"; }
   .disclosure-content{
-    padding:0 12px 12px;
+    padding:0 var(--space-md) var(--space-md);
     color:var(--text-muted);
     font-size:0.88rem;
     line-height:1.5;
@@ -345,8 +344,8 @@
   .manual-fallback{
     display:flex;
     flex-direction:column;
-    gap:8px;
-    margin-top:4px;
+    gap:var(--space-sm);
+    margin-top:var(--space-sm);
   }
   .manual-fallback label{
     font-size:0.82rem;
@@ -360,7 +359,7 @@
     border-radius:10px;
     background:var(--card-bg);
     color:var(--text);
-    padding:10px 12px;
+    padding:var(--space-sm) var(--space-md);
     font:inherit;
   }
   details.link-reveal{ margin-top:var(--space-sm); }
